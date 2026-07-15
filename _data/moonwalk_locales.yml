@@ -1,4 +1,5 @@
 en:
+  skip_to_content: "Skip to content"
   back_home: "Back to home"
   back_to_top: "Back to top"
   published: "Published"
@@ -26,6 +27,7 @@ en:
   search_error: "Search index could not be loaded."
 
 zh-CN:
+  skip_to_content: "跳到主要内容"
   back_home: "返回首页"
   back_to_top: "返回顶部"
   published: "发布于"

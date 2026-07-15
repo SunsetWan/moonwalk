@@ -2,11 +2,20 @@
 {% assign moonwalk_locale = site.data.moonwalk_locales[moonwalk_lang] | default: site.data.moonwalk_locales.en %}
 <script>
 (function() {
-  document.querySelectorAll('div.highlighter-rouge').forEach(function(block) {
+  var blocks = Array.from(document.querySelectorAll('div.highlighter-rouge'));
+  document.querySelectorAll('pre').forEach(function(pre) {
+    if (!pre.closest('div.highlighter-rouge')) blocks.push(pre);
+  });
+
+  blocks.forEach(function(block) {
+    var code = block.querySelector('code');
+    if (!code) return;
+
     block.style.position = 'relative';
+    block.classList.add('has-code-copy');
 
     // Language label derived from rouge's language-* class
-    var langClass = Array.from(block.classList).find(function(c) {
+    var langClass = Array.from(block.classList).concat(Array.from(code.classList)).find(function(c) {
       return c.indexOf('language-') === 0 && c !== 'language-plaintext';
     });
     if (langClass) {
@@ -19,12 +28,16 @@
     var btn = document.createElement('button');
     btn.className = 'code-copy';
     btn.setAttribute('aria-label', {{ moonwalk_locale.copy_code | jsonify }});
+    btn.setAttribute('aria-live', 'polite');
     btn.textContent = {{ moonwalk_locale.copy | jsonify }};
     btn.addEventListener('click', function() {
-      var code = block.querySelector('code');
       navigator.clipboard.writeText(code.innerText).then(function() {
         btn.textContent = {{ moonwalk_locale.copied | jsonify }};
-        setTimeout(function() { btn.textContent = {{ moonwalk_locale.copy | jsonify }}; }, 2000);
+        btn.setAttribute('aria-label', {{ moonwalk_locale.copied | jsonify }});
+        setTimeout(function() {
+          btn.textContent = {{ moonwalk_locale.copy | jsonify }};
+          btn.setAttribute('aria-label', {{ moonwalk_locale.copy_code | jsonify }});
+        }, 2000);
       });
     });
     block.appendChild(btn);

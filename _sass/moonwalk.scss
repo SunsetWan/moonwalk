@@ -6,7 +6,9 @@
   --radius-lg: 0.75rem;
 }
 
-html { height: 100%; }
+html {
+  height: 100%;
+}
 
 body {
   font-family: var(--font-sans);
@@ -57,13 +59,16 @@ li { margin: 0.4em 0; }
 
 table {
   width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
   border-collapse: collapse;
   display: block;
   overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
 }
 table, th, td {
   border: 1px solid var(--border);
+}
+th, td {
   padding: 0.55em 0.75em;
 }
 th {
@@ -75,8 +80,10 @@ th {
 div.highlighter-rouge {
   position: relative;
 }
-div.highlighter-rouge pre code, pre code.highlighter-rouge {
+pre code {
   display: block;
+  box-sizing: border-box;
+  max-width: 100%;
   overflow-x: auto;
   padding: 1em;
 }
@@ -113,6 +120,7 @@ blockquote {
 
 img {
   max-width: 100%;
+  height: auto;
   display: block;
   margin: 0 auto;
 }
@@ -133,6 +141,7 @@ img {
   --share-text: #999;
   --border: rgba(15, 23, 42, 0.08);
   --border-subtle: rgba(15, 23, 42, 0.05);
+  --control-border: #858d99;
 }
 // -------------- THEME SWITCHER -------------- //
 @mixin dark-appearance {
@@ -148,10 +157,18 @@ img {
   --share-text: #C4C4C4;
   --border: rgba(255, 255, 255, 0.08);
   --border-subtle: rgba(255, 255, 255, 0.05);
+  --control-border: #687386;
 }
 
-html[data-theme="dark"] { @include dark-appearance; }
-html[data-theme="light"] { @include light-appearance; }
+html[data-theme="dark"] {
+  @include dark-appearance;
+  color-scheme: dark;
+}
+html[data-theme="light"] {
+  @include light-appearance;
+  color-scheme: light;
+}
+html[data-theme="auto"] { color-scheme: light dark; }
 
 @media (prefers-color-scheme: dark) {
   html[data-theme="auto"] { @include dark-appearance; }
@@ -187,7 +204,9 @@ a {
   html.transition *,
   html.transition *:before,
   html.transition *:after {
-      transition: all 250ms !important;
+      transition-property: color, background-color, border-color, box-shadow, fill, stroke !important;
+      transition-duration: 250ms !important;
+      transition-timing-function: ease !important;
       transition-delay: 0 !important;
   }
 }
@@ -195,24 +214,23 @@ a {
 noscript .theme-toggle { display: none; }
 
 .theme-toggle {
+  box-sizing: border-box;
+  width: 44px;
+  height: 44px;
   color: var(--text);
   background-color: transparent;
-  padding: 4px;
+  padding: 8px;
   cursor: pointer;
   margin: 1em;
   position: fixed;
   right: 0;
   top: 0;
   border: 2px transparent solid;
-  outline: none;
+  z-index: 60;
 }
 
 .theme-toggle:hover {
   color: var(--links);
-  outline: none;
-}
-.theme-toggle:focus {
-  outline: none;
 }
 @media screen and (max-width: 600px) {
   .theme-toggle {
@@ -284,9 +302,44 @@ mark {
   font-family: var(--font-mono);
   font-size: 0.85em;
   color: var(--text-secondary);
+  white-space: nowrap;
+}
+.post-list {
+  list-style: none;
+  padding-left: 0;
+}
+.post-list .post-list-item {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  align-items: baseline;
+  column-gap: 0.7em;
+  margin: 0.45em 0;
 }
 .post-list-item a {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  word-break: break-word;
   text-decoration: none;
+}
+
+@media (hover: none), (pointer: coarse) {
+  .post-list-item a,
+  ul.horizontal-list li:not(.card) a,
+  .toc a,
+  .tag {
+    box-sizing: border-box;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .post-nav a {
+    box-sizing: border-box;
+    min-height: 44px;
+    padding: 0.4rem 0;
+  }
+
+  .toc li { margin: 0; }
 }
 .text-bold {
   font-weight: bold;
@@ -295,7 +348,7 @@ mark {
   text-transform: uppercase;
   letter-spacing: 1px;
 }
-p code, li code {
+p code, li > code {
   background-color: var(--bg-subtle);
   padding: 0.15rem 0.4rem;
   color: var(--code-text);
@@ -303,12 +356,18 @@ p code, li code {
   border-radius: var(--radius-sm);
   border: 1px solid var(--border-subtle);
   font-size: 0.875em;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 .code-copy {
+  display: inline-flex;
   position: absolute;
   top: 0.5em;
   right: 0.5em;
-  padding: 0.25em 0.65em;
+  box-sizing: border-box;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0.5em 0.75em;
   font-size: 0.72rem;
   font-family: var(--font-sans);
   font-weight: 500;
@@ -319,14 +378,23 @@ p code, li code {
   cursor: pointer;
   opacity: 0;
   transition: opacity 0.2s ease, color 0.2s ease;
+  align-items: center;
+  justify-content: center;
 }
 div.highlighter-rouge:hover .code-copy {
+  opacity: 1;
+}
+div.highlighter-rouge.has-code-copy pre code,
+pre.has-code-copy > code {
+  padding-top: 3.5rem;
+}
+.code-copy:focus-visible {
   opacity: 1;
 }
 .code-copy:hover {
   color: var(--links);
 }
-@media screen and (max-width: 600px) {
+@media (hover: none), (pointer: coarse) {
   .code-copy {
     opacity: 1;
   }
@@ -334,10 +402,11 @@ div.highlighter-rouge:hover .code-copy {
 
 .back-link {
   display: inline-flex;
+  box-sizing: border-box;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   border: 1px solid var(--border);
   background: var(--bg-secondary);
@@ -345,10 +414,6 @@ div.highlighter-rouge:hover .code-copy {
   text-decoration: none;
   transition: color 0.3s ease;
   &:hover { color: var(--links); }
-  @media screen and (max-width: 600px) {
-    width: 36px;
-    height: 36px;
-  }
 }
 
 .post-title {
@@ -432,7 +497,8 @@ div.highlighter-rouge:hover .code-copy {
   font-size: 0.72em;
   font-weight: 500;
   text-decoration: none;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
   letter-spacing: 0.01em;
   transition: color 0.2s ease, border-color 0.2s ease;
   &:hover {
@@ -554,6 +620,9 @@ div.highlighter-rouge:hover .code-copy {
     color: var(--links);
     text-decoration: none;
     max-width: 45%;
+    min-width: 0;
+    overflow-wrap: anywhere;
+    word-break: break-word;
     &:hover { text-decoration: underline; }
   }
   .post-nav-next {
@@ -587,6 +656,10 @@ div.highlighter-rouge:hover .code-copy {
   font-size: 0.9em;
 
   summary {
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    min-height: 44px;
     cursor: pointer;
     font-weight: 600;
     font-family: var(--font-sans);
@@ -604,6 +677,8 @@ div.highlighter-rouge:hover .code-copy {
   a {
     color: var(--text);
     text-decoration: none;
+    overflow-wrap: anywhere;
+    word-break: break-word;
     &:hover { color: var(--links); }
   }
   .toc-sub {
@@ -613,19 +688,32 @@ div.highlighter-rouge:hover .code-copy {
 // ----------------------------------------------- //
 
 // -------------- MICRO-INTERACTIONS -------------- //
-@media (prefers-reduced-motion: no-preference) {
-  .page-content a:not(.tag):not(.card a):not(.back-link):not(.not-found-cta) {
-    text-decoration: none;
-    background-image: linear-gradient(var(--links), var(--links));
-    background-size: 0% 1px;
-    background-position: left bottom;
-    background-repeat: no-repeat;
-    transition: background-size 0.3s ease;
-  }
-  .page-content a:not(.tag):not(.card a):not(.back-link):not(.not-found-cta):hover {
-    background-size: 100% 1px;
-  }
+.post-content a,
+.page-body a {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  text-decoration-line: underline;
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.18em;
+}
+.post-content,
+.page-body,
+.post-title,
+.page-title {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
 
+@media (prefers-reduced-motion: no-preference) {
+  .post-content a,
+  .page-body a {
+    transition: text-decoration-thickness 0.2s ease, text-underline-offset 0.2s ease;
+  }
+  .post-content a:hover,
+  .page-body a:hover {
+    text-decoration-thickness: 0.13em;
+    text-underline-offset: 0.22em;
+  }
   .page-content {
     animation: fadeIn 0.4s ease-out;
   }
@@ -656,12 +744,15 @@ html[data-theme="dark"] {
 }
 .search-input {
   width: 100%;
+  max-width: 100%;
+  min-height: 44px;
+  box-sizing: border-box;
   padding: 0.65em 0.9em;
   font-family: var(--font-sans);
-  font-size: 0.95rem;
+  font-size: 1rem;
   color: var(--text);
   background-color: var(--bg-subtle);
-  border: 1px solid var(--border);
+  border: 1px solid var(--control-border);
   border-radius: var(--radius-md);
   outline: none;
   transition: border-color 0.2s ease, background-color 0.2s ease;
@@ -679,6 +770,8 @@ html[data-theme="dark"] {
 
   .search-result a {
     display: flex;
+    box-sizing: border-box;
+    min-height: 44px;
     justify-content: space-between;
     align-items: baseline;
     gap: 1em;
@@ -688,7 +781,11 @@ html[data-theme="dark"] {
     color: var(--text);
     &:hover { background-color: var(--bg-subtle); }
   }
-  .search-result-title { font-weight: 500; }
+  .search-result-title {
+    font-weight: 500;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
   .search-result-body {
     display: flex;
     min-width: 0;
@@ -749,6 +846,8 @@ details:not(.toc):not([class*="markdown-alert"]) {
 
   &[open] { border-color: var(--border); }
   > summary {
+    box-sizing: border-box;
+    min-height: 44px;
     cursor: pointer;
     font-weight: 600;
     color: var(--headings);
@@ -810,15 +909,47 @@ details:not(.toc):not([class*="markdown-alert"]) {
 .link-preview.visible { opacity: 1; }
 
 // -------------- VIEW TRANSITIONS -------------- //
-// Smooth crossfade on cross-document navigation in supporting browsers
-// (Chrome/Edge/Safari). No-op everywhere else.
-@view-transition {
-  navigation: auto;
-}
 @media (prefers-reduced-motion: no-preference) {
+  // Smooth crossfade on cross-document navigation in supporting browsers.
+  @view-transition {
+    navigation: auto;
+  }
   ::view-transition-old(root),
   ::view-transition-new(root) {
     animation-duration: 0.25s;
   }
 }
 // ----------------------------------------------- //
+
+// Keep keyboard focus visible without changing pointer/touch presentation.
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+summary:focus-visible {
+  outline: 2px solid var(--links);
+  outline-offset: 3px;
+}
+
+.skip-link {
+  position: fixed;
+  top: 0.5rem;
+  left: 0.5rem;
+  z-index: 70;
+  box-sizing: border-box;
+  min-height: 44px;
+  padding: 0.55rem 0.9rem;
+  display: flex;
+  align-items: center;
+  color: var(--text);
+  background: var(--bg);
+  border: 2px solid var(--links);
+  border-radius: var(--radius-md);
+  transform: translateY(calc(-100% - 1rem));
+  transition: transform 0.15s ease;
+}
+.skip-link:focus {
+  transform: translateY(0);
+}
+@media (prefers-reduced-motion: reduce) {
+  .skip-link { transition: none; }
+}

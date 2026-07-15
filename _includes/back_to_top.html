@@ -1,7 +1,7 @@
 {% assign moonwalk_lang = page.lang | default: site.lang | default: "en" %}
 {% assign moonwalk_locale = site.data.moonwalk_locales[moonwalk_lang] | default: site.data.moonwalk_locales.en %}
-<button class="back-to-top" aria-label="{{ moonwalk_locale.back_to_top }}" title="{{ moonwalk_locale.back_to_top }}">
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<button class="back-to-top" aria-label="{{ moonwalk_locale.back_to_top }}" title="{{ moonwalk_locale.back_to_top }}" aria-hidden="true" tabindex="-1">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
     <polyline points="18 15 12 9 6 15"></polyline>
   </svg>
 </button>
@@ -10,16 +10,18 @@
     position: fixed;
     bottom: 2em;
     right: 2em;
-    width: 40px;
-    height: 40px;
+    box-sizing: border-box;
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
     border: 1px solid var(--border);
     background: var(--bg-secondary);
     color: var(--text);
     cursor: pointer;
     opacity: 0;
+    visibility: hidden;
     pointer-events: none;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.3s ease, visibility 0s linear 0.3s;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -27,7 +29,9 @@
   }
   .back-to-top.visible {
     opacity: 1;
+    visibility: visible;
     pointer-events: auto;
+    transition-delay: 0s;
   }
   .back-to-top:hover {
     color: var(--links);
@@ -36,8 +40,6 @@
     .back-to-top {
       bottom: 1em;
       right: 1em;
-      width: 36px;
-      height: 36px;
     }
   }
 </style>
@@ -45,16 +47,23 @@
 (function() {
   var btn = document.querySelector('.back-to-top');
   if (!btn) return;
+  var visible = false;
+
+  function setVisible(nextVisible) {
+    if (visible === nextVisible) return;
+    visible = nextVisible;
+    btn.classList.toggle('visible', visible);
+    btn.setAttribute('aria-hidden', visible ? 'false' : 'true');
+    btn.tabIndex = visible ? 0 : -1;
+  }
+
   btn.addEventListener('click', function() {
     var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     window.scrollTo({top: 0, behavior: reduceMotion ? 'auto' : 'smooth'});
   });
   window.addEventListener('scroll', function() {
-    if (window.scrollY > 400) {
-      btn.classList.add('visible');
-    } else {
-      btn.classList.remove('visible');
-    }
+    setVisible(window.scrollY > 400);
   });
+  setVisible(window.scrollY > 400);
 })();
 </script>

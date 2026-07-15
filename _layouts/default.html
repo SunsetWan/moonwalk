@@ -2,10 +2,13 @@
 <html lang="{{ page.lang | default: site.lang | default: "en" }}" class="html" data-theme="{{ site.theme_config.appearance | default: "auto" }}">
   {%- include head.html -%}
   <body>
+    {% assign moonwalk_lang = page.lang | default: site.lang | default: "en" %}
+    {% assign moonwalk_locale = site.data.moonwalk_locales[moonwalk_lang] | default: site.data.moonwalk_locales.en %}
+    <a class="skip-link" href="#main-content">{{ moonwalk_locale.skip_to_content }}</a>
     {%- if site.theme_config.show_progress_bar and page.layout == "post" -%}
       {% include progress_bar.html %}
     {%- endif -%}
-    <main class="page-content" aria-label="Content">
+    <main id="main-content" class="page-content" aria-label="Content" tabindex="-1">
       <div class="w">
         {{ content }}
         {% if site.theme_config.appearance_toggle %}

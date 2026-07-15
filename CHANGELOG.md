@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.3.0.2 - Mobile Safari polish
+
+- Prevent narrow-screen overflow in search fields, tables, long tokens, and every fenced-code shape, and avoid iOS input zoom.
+- Improve long-content wrapping while preserving horizontal scrolling for code blocks.
+- Enlarge independent controls for coarse pointers and restore visible keyboard focus.
+- Keep hidden back-to-top controls out of keyboard and assistive-technology navigation.
+- Align wrapped post titles in a date-and-title grid and reduce theme-switch transition work.
+- Keep article links visibly underlined, synchronize native controls with the selected color scheme, and add a skip-to-content link.
+- Make copy controls available for both Rouge-wrapped and standalone fenced code blocks.
+- Raise syntax-token contrast for small code text in both light and dark themes.
+
 ## 0.3.0.1 - Sunset fork
 
 - Add English and Simplified Chinese UI locales.
