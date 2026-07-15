@@ -1,10 +1,12 @@
+{% assign moonwalk_lang = page.lang | default: site.lang | default: "en" %}
+{% assign moonwalk_locale = site.data.moonwalk_locales[moonwalk_lang] | default: site.data.moonwalk_locales.en %}
 {% if page.previous or page.next %}
-<nav class="post-nav" aria-label="Post navigation">
+<nav class="post-nav" aria-label="{{ moonwalk_locale.post_navigation }}">
   {% if page.previous %}
-    <a class="post-nav-prev" href="{{ page.previous.url | relative_url }}">&larr; {{ page.previous.title }}</a>
+    <a class="post-nav-prev" href="{{ page.previous.url | relative_url }}"><span class="post-nav-label">&larr; {{ moonwalk_locale.previous_post }}</span>{{ page.previous.title }}</a>
   {% endif %}
   {% if page.next %}
-    <a class="post-nav-next" href="{{ page.next.url | relative_url }}">{{ page.next.title }} &rarr;</a>
+    <a class="post-nav-next" href="{{ page.next.url | relative_url }}"><span class="post-nav-label">{{ moonwalk_locale.next_post }} &rarr;</span>{{ page.next.title }}</a>
   {% endif %}
 </nav>
 {% endif %}

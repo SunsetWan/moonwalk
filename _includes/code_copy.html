@@ -1,3 +1,5 @@
+{% assign moonwalk_lang = page.lang | default: site.lang | default: "en" %}
+{% assign moonwalk_locale = site.data.moonwalk_locales[moonwalk_lang] | default: site.data.moonwalk_locales.en %}
 <script>
 (function() {
   document.querySelectorAll('div.highlighter-rouge').forEach(function(block) {
@@ -16,13 +18,13 @@
 
     var btn = document.createElement('button');
     btn.className = 'code-copy';
-    btn.setAttribute('aria-label', 'Copy code to clipboard');
-    btn.textContent = 'copy';
+    btn.setAttribute('aria-label', {{ moonwalk_locale.copy_code | jsonify }});
+    btn.textContent = {{ moonwalk_locale.copy | jsonify }};
     btn.addEventListener('click', function() {
       var code = block.querySelector('code');
       navigator.clipboard.writeText(code.innerText).then(function() {
-        btn.textContent = 'copied!';
-        setTimeout(function() { btn.textContent = 'copy'; }, 2000);
+        btn.textContent = {{ moonwalk_locale.copied | jsonify }};
+        setTimeout(function() { btn.textContent = {{ moonwalk_locale.copy | jsonify }}; }, 2000);
       });
     });
     block.appendChild(btn);

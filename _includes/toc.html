@@ -21,8 +21,10 @@
 
 {% assign items = toc_items | split: ";;;" %}
 {% if items.size > 0 %}
-<details class="toc" open>
-  <summary>Table of Contents</summary>
+{% assign moonwalk_lang = page.lang | default: site.lang | default: "en" %}
+{% assign moonwalk_locale = site.data.moonwalk_locales[moonwalk_lang] | default: site.data.moonwalk_locales.en %}
+<details class="toc"{% if site.theme_config.toc_open == true or page.toc_open == true %} open{% endif %}>
+  <summary>{{ moonwalk_locale.table_of_contents }}</summary>
   <ul>
     {% for item in items %}
       {% if item != "" %}

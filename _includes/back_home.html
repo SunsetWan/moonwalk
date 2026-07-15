@@ -1,0 +1,8 @@
+{% assign moonwalk_lang = page.lang | default: site.lang | default: "en" %}
+{% assign moonwalk_locale = site.data.moonwalk_locales[moonwalk_lang] | default: site.data.moonwalk_locales.en %}
+{% assign moonwalk_home_url = site.theme_config.home_url | default: "/" %}
+<a href="{{ moonwalk_home_url | relative_url }}" class="back-link" aria-label="{{ moonwalk_locale.back_home }}" title="{{ moonwalk_locale.back_home }}">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <polyline points="15 18 9 12 15 6"></polyline>
+  </svg>
+</a>

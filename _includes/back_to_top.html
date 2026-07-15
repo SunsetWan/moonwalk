@@ -1,4 +1,6 @@
-<button class="back-to-top" aria-label="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+{% assign moonwalk_lang = page.lang | default: site.lang | default: "en" %}
+{% assign moonwalk_locale = site.data.moonwalk_locales[moonwalk_lang] | default: site.data.moonwalk_locales.en %}
+<button class="back-to-top" aria-label="{{ moonwalk_locale.back_to_top }}" title="{{ moonwalk_locale.back_to_top }}">
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <polyline points="18 15 12 9 6 15"></polyline>
   </svg>
@@ -42,6 +44,11 @@
 <script>
 (function() {
   var btn = document.querySelector('.back-to-top');
+  if (!btn) return;
+  btn.addEventListener('click', function() {
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    window.scrollTo({top: 0, behavior: reduceMotion ? 'auto' : 'smooth'});
+  });
   window.addEventListener('scroll', function() {
     if (window.scrollY > 400) {
       btn.classList.add('visible');

@@ -1,0 +1,33 @@
+---
+layout: default
+---
+
+{% assign moonwalk_lang = page.lang | default: site.lang | default: "en" %}
+{% assign moonwalk_locale = site.data.moonwalk_locales[moonwalk_lang] | default: site.data.moonwalk_locales.en %}
+{% assign archive_title = page.title %}
+{% if archive_title == nil or archive_title == "" %}
+  {% case page.type %}
+    {% when "year" %}
+      {% assign archive_period = page.date | date: moonwalk_locale.archive_year_format %}
+    {% when "month" %}
+      {% assign archive_period = page.date | date: moonwalk_locale.archive_month_format %}
+    {% when "day" %}
+      {% assign archive_period = page.date | date: moonwalk_locale.archive_day_format %}
+  {% endcase %}
+  {% if archive_period and archive_period != "" %}
+    {% capture archive_title %}{{ moonwalk_locale.archive }} · {{ archive_period }}{% endcapture %}
+  {% else %}
+    {% assign archive_title = moonwalk_locale.archive %}
+  {% endif %}
+{% endif %}
+
+{% include back_home.html %}
+
+<header>
+  <h1>{{ archive_title }}</h1>
+</header>
+
+{{ content }}
+
+{% assign archive_posts = page.posts | default: site.posts %}
+{% include post_list.html posts=archive_posts %}

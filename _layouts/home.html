@@ -27,7 +27,10 @@ layout: default
 {% endif %}
 
 {% if site.theme_config.show_blog == true %}
-  <h2>{{ site.theme_config.home.title_blog }}</h2>
+  {% assign blog_title = site.theme_config.home.title_blog %}
+  {% if blog_title and blog_title != "" %}
+    <h2>{{ blog_title }}</h2>
+  {% endif %}
   {% include post_list.html %}
 {% endif %}
 

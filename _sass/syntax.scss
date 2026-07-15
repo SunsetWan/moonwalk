@@ -1,6 +1,5 @@
 // Light mode syntax highlighting
-html[data-theme="light"] .highlight,
-body[data-theme="auto"] .highlight {
+html[data-theme="light"] .highlight {
   .hll { background-color: #ffffcc }
   &    { background: #f6f8fa; color: #24292f }
   .c   { color: #6a737d } /* Comment */
@@ -76,7 +75,7 @@ body[data-theme="auto"] .highlight {
 }
 
 @media (prefers-color-scheme: light) {
-  body[data-theme="auto"] .highlight {
+  html[data-theme="auto"] .highlight {
     .hll { background-color: #ffffcc }
     &    { background: #f6f8fa; color: #24292f }
     .c   { color: #6a737d }

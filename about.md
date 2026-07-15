@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: page
 title: About Moonwalk
 ---
 
@@ -27,7 +27,7 @@ Everything is opt-in via `_config.yml` - turn on only what you need:
 
 ## Getting started
 
-1. [Fork this repo](https://github.com/abhinavs/moonwalk/fork) or click "Use this template"
+1. [Fork this repo](https://github.com/SunsetWan/moonwalk/fork) or add the tagged theme dependency
 2. Edit `_config.yml` with your name, title, and preferences
 3. Push - GitHub Pages deploys it automatically
 

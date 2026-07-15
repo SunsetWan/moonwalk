@@ -1,0 +1,16 @@
+---
+layout: default
+---
+
+{% assign moonwalk_lang = page.lang | default: site.lang | default: "en" %}
+{% assign moonwalk_locale = site.data.moonwalk_locales[moonwalk_lang] | default: site.data.moonwalk_locales.en %}
+
+{% include back_home.html %}
+
+<header>
+  <h1>{{ page.title | default: moonwalk_locale.search_title }}</h1>
+</header>
+
+{{ content }}
+
+{% include search.html %}

@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.3.0.1 - Sunset fork
+
+- Add English and Simplified Chinese UI locales.
+- Use CJK-friendly system fonts and configurable light/dark accent colors.
+- Add generic page, archive, tag, and search layouts.
+- Remove Soopr and optional LLM-output integrations in favor of standard `jekyll-seo-tag`.
+- Fix automatic color-scheme selectors, first-paint theme restoration, document language, deterministic home links, updated dates, and tag casing.
+- Make favicons opt-in and reading time, link previews, and footnote tooltips opt-in.
+
 ## Unreleased
 
 ### Added

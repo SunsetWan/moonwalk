@@ -14,29 +14,22 @@
   {% seo title=false %}
   {% feed_meta %}
 
-  <!-- Favicon -->
-  <link rel="apple-touch-icon" sizes="180x180" href="{{ "/assets/images/favicon/apple-touch-icon.png" | relative_url }}">
-  <link rel="icon" type="image/png" sizes="32x32" href="{{ "/assets/images/favicon/favicon-32x32.png" | relative_url }}">
-  <link rel="icon" type="image/png" sizes="16x16" href="{{ "/assets/images/favicon/favicon-16x16.png" | relative_url }}">
-  <link rel="manifest" href="{{ "/assets/images/favicon/site.webmanifest" | relative_url }}">
-  <link rel="mask-icon" href="{{ "/assets/images/favicon/safari-pinned-tab.svg" | relative_url }}" color="#5bbad5">
-  <link rel="shortcut icon" href="{{ "/assets/images/favicon/favicon.ico" | relative_url }}">
-  <meta name="msapplication-TileColor" content="#00aba9">
-  <meta name="msapplication-config" content="{{ "/assets/images/favicon/browserconfig.xml" | relative_url }}">
-  <meta name="theme-color" content="#ffffff">
-  <!-- Favicon -->
+  {% if site.theme_config.favicon.enabled == true %}
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ site.theme_config.favicon.apple_touch_icon | relative_url }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ site.theme_config.favicon.icon_32 | relative_url }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ site.theme_config.favicon.icon_16 | relative_url }}">
+    <link rel="manifest" href="{{ site.theme_config.favicon.manifest | relative_url }}">
+    <link rel="mask-icon" href="{{ site.theme_config.favicon.mask_icon | relative_url }}" color="{{ site.theme_config.favicon.mask_color | default: "#5bbad5" }}">
+    <link rel="shortcut icon" href="{{ site.theme_config.favicon.shortcut_icon | relative_url }}">
+    <meta name="msapplication-TileColor" content="{{ site.theme_config.favicon.tile_color | default: "#00aba9" }}">
+    <meta name="msapplication-config" content="{{ site.theme_config.favicon.browserconfig | relative_url }}">
+    <meta name="theme-color" content="{{ site.theme_config.favicon.theme_color | default: "#ffffff" }}">
+  {% endif %}
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
-  {%- if site.soopr -%}
-  <link rel="dns-prefetch" href="https://sdk.soopr.co">
-  {%- endif -%}
-
-  <link rel="stylesheet" href="{{ "/assets/css/main.css" | relative_url }}" />
   {% if site.theme_config.appearance_toggle %}
     {% include toggle_theme_js.html %}
   {% endif %}
+  <link rel="stylesheet" href="{{ "/assets/css/main.css" | relative_url }}" />
 
   {%- include custom_head.html -%}
 </head>

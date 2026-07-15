@@ -1,3 +1,6 @@
+{% assign moonwalk_lang = page.lang | default: site.lang | default: "en" %}
+{% assign moonwalk_locale = site.data.moonwalk_locales[moonwalk_lang] | default: site.data.moonwalk_locales.en %}
+{% assign moonwalk_date_format = site.theme_config.date_format | default: "%Y-%m-%d" %}
 <div class="post-meta">
   <div class="post-meta-line">
     {% if page.author %}
@@ -6,14 +9,20 @@
     {% endif %}
     {% if page.date %}
       <time class="post-meta-date" datetime="{{ page.date | date_to_xmlschema }}">
-        {{ page.date | date: "%B %-d, %Y" }}
+        {{ moonwalk_locale.published }} {{ page.date | date: moonwalk_date_format }}
+      </time>
+    {% endif %}
+    {% if page.updated %}
+      {% if page.date %}<span class="post-meta-sep">·</span>{% endif %}
+      <time class="post-meta-updated" datetime="{{ page.updated | date_to_xmlschema }}">
+        {{ moonwalk_locale.updated }} {{ page.updated | date: moonwalk_date_format }}
       </time>
     {% endif %}
     {% if site.theme_config.show_reading_time == true %}
       {% capture words %}{{ content | number_of_words | minus: 180 }}{% endcapture %}
       {% unless words contains '-' %}
         <span class="post-meta-sep">·</span>
-        <span class="post-meta-reading">{{ words | plus: 180 | divided_by: 180 }} min read</span>
+        <span class="post-meta-reading">{{ words | plus: 180 | divided_by: 180 }} {{ moonwalk_locale.minute_read }}</span>
       {% endunless %}
     {% endif %}
   </div>
@@ -21,12 +30,12 @@
   {% if site.theme_config.show_tags == true and page.tags %}
     <div class="post-meta-tags">
       {% for tag in page.tags %}
-        <a href="{{ "/tags" | relative_url }}#{{ tag | slugify }}" class="tag">{{ tag }}</a>
+        {% assign tag_href = nil %}
+        {% if site.theme_config.use_legacy_tag_url_filter == true %}
+          {% assign tag_href = tag | legacy_tag_url %}
+        {% endif %}
+        {% include tag_link.html tag=tag url=tag_href %}
       {% endfor %}
     </div>
   {% endif %}
-
-  <div class="soopr-btn"
-     {% if site.twitter.username %}data-twitter="{{ site.twitter.username }}"{% endif %}
-  ></div>
 </div>

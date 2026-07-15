@@ -1,4 +1,12 @@
-<button aria-label="Toggle dark mode" aria-pressed="false" class="theme-toggle">
+{% assign moonwalk_lang = page.lang | default: site.lang | default: "en" %}
+{% assign moonwalk_locale = site.data.moonwalk_locales[moonwalk_lang] | default: site.data.moonwalk_locales.en %}
+<button
+  aria-label="{{ moonwalk_locale.switch_to_dark }}"
+  aria-pressed="false"
+  class="theme-toggle"
+  data-label-light="{{ moonwalk_locale.switch_to_light | escape }}"
+  data-label-dark="{{ moonwalk_locale.switch_to_dark | escape }}"
+>
   <svg class="icon-sun" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
     <circle cx="12" cy="12" r="5"></circle>
     <line x1="12" y1="1" x2="12" y2="3"></line>

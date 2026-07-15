@@ -1,0 +1,21 @@
+---
+layout: default
+---
+
+{% assign moonwalk_lang = page.lang | default: site.lang | default: "en" %}
+{% assign moonwalk_locale = site.data.moonwalk_locales[moonwalk_lang] | default: site.data.moonwalk_locales.en %}
+
+{% include back_home.html %}
+
+<header>
+  <h1>{{ page.title | default: page.tag | default: moonwalk_locale.tag }}</h1>
+  {% if page.posts %}
+    <p class="archive-count">{{ page.posts.size }} {{ moonwalk_locale.posts }}</p>
+  {% endif %}
+</header>
+
+{{ content }}
+
+{% if page.posts %}
+  {% include post_list.html posts=page.posts %}
+{% endif %}

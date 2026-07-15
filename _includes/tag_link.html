@@ -1,0 +1,8 @@
+{% assign moonwalk_tag_url = include.url %}
+{% if moonwalk_tag_url == nil or moonwalk_tag_url == "" %}
+  {% assign moonwalk_tag_mode = site.theme_config.tag_slug_mode | default: "pretty" %}
+  {% assign moonwalk_tag_slug = include.tag | slugify: moonwalk_tag_mode %}
+  {% assign moonwalk_tag_template = site.theme_config.tag_path | default: "/tags/:tag/" %}
+  {% assign moonwalk_tag_url = moonwalk_tag_template | replace: ":tag", moonwalk_tag_slug %}
+{% endif %}
+<a href="{{ moonwalk_tag_url | relative_url }}" class="tag">{{ include.tag }}</a>

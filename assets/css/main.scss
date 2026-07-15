@@ -4,3 +4,10 @@
 @use "moonwalk";
 @use "list";
 @use "syntax";
+
+:root {
+  --moonwalk-accent-light: {{ site.theme_config.accent.light | default: "#4f46e5" }};
+  --moonwalk-accent-dark: {{ site.theme_config.accent.dark | default: "#91a7ff" }};
+  --moonwalk-selection-light: {{ site.theme_config.accent.selection_light | default: "#ffecb2" }};
+  --moonwalk-selection-dark: {{ site.theme_config.accent.selection_dark | default: "#41c7c7" }};
+}
