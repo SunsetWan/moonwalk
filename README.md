@@ -9,7 +9,7 @@ This fork remains MIT licensed. Moonwalk was created by Abhinav Saxena and origi
 ```ruby
 gem "moonwalk",
   git: "https://github.com/SunsetWan/moonwalk.git",
-  tag: "sunset-v0.3.0.1"
+  tag: "sunset-v0.3.0.2"
 ```
 
 Then set `theme: moonwalk` in `_config.yml` and run `bundle install`. Consumers should pin a `sunset-*` tag rather than the fork's default branch.
